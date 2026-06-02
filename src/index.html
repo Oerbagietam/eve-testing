@@ -1,0 +1,532 @@
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>EVE</title>
+    <script>
+      (function () {
+        try {
+          var t = localStorage.getItem('eveTheme') || 'dark';
+          document.documentElement.setAttribute('data-theme', t);
+        } catch (e) {
+          document.documentElement.setAttribute('data-theme', 'dark');
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="xp-titlebar">
+        <span class="xp-titlebar-icon" aria-hidden="true"></span>
+        <span class="xp-titlebar-text">EVE — Registro de Testes</span>
+        <div class="xp-titlebar-buttons">
+          <button
+            type="button"
+            id="themeToggleBtn"
+            class="xp-wbtn xp-wbtn-theme"
+            aria-label="Alternar tema"
+            title="Alternar tema"
+          >
+            <svg
+              class="xp-wbtn-icon-theme-dark"
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              aria-hidden="true"
+            >
+              <path
+                d="M9.5 7.2A4 4 0 1 1 4.8 2.5a4.2 4.2 0 0 0 4.7 4.7z"
+                fill="currentColor"
+              />
+            </svg>
+            <svg
+              class="xp-wbtn-icon-theme-light"
+              width="12"
+              height="12"
+              viewBox="0 0 12 12"
+              aria-hidden="true"
+            >
+              <circle cx="6" cy="6" r="2.2" fill="currentColor" />
+              <g stroke="currentColor" stroke-width="1" stroke-linecap="round">
+                <path d="M6 .8v1.6" />
+                <path d="M6 9.6v1.6" />
+                <path d="M.8 6h1.6" />
+                <path d="M9.6 6h1.6" />
+                <path d="M2.2 2.2l1.1 1.1" />
+                <path d="M8.7 8.7l1.1 1.1" />
+                <path d="M2.2 9.8l1.1-1.1" />
+                <path d="M8.7 3.3l1.1-1.1" />
+              </g>
+            </svg>
+          </button>
+          <button
+            type="button"
+            id="winMinimizeBtn"
+            class="xp-wbtn"
+            aria-label="Minimizar"
+            title="Minimizar"
+          >
+            <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+              <rect x="1" y="5" width="8" height="1" fill="currentColor" />
+            </svg>
+          </button>
+          <button
+            type="button"
+            id="winMaximizeBtn"
+            class="xp-wbtn"
+            aria-label="Maximizar"
+            title="Maximizar"
+          >
+            <svg
+              class="xp-wbtn-icon-maximize"
+              width="10"
+              height="10"
+              viewBox="0 0 10 10"
+              aria-hidden="true"
+            >
+              <rect
+                x="1.5"
+                y="1.5"
+                width="7"
+                height="7"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1"
+              />
+            </svg>
+            <svg
+              class="xp-wbtn-icon-restore"
+              width="10"
+              height="10"
+              viewBox="0 0 10 10"
+              aria-hidden="true"
+            >
+              <rect
+                x="3"
+                y="1"
+                width="6"
+                height="6"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1"
+              />
+              <rect
+                x="1"
+                y="3"
+                width="6"
+                height="6"
+                fill="var(--violet-700, #4f2dc7)"
+                stroke="currentColor"
+                stroke-width="1"
+              />
+            </svg>
+          </button>
+          <button
+            type="button"
+            id="winCloseBtn"
+            class="xp-wbtn xp-wbtn-close"
+            aria-label="Fechar"
+            title="Fechar"
+          >
+            <svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true">
+              <path
+                d="M1.5 1.5 L8.5 8.5 M8.5 1.5 L1.5 8.5"
+                stroke="currentColor"
+                stroke-width="1.2"
+                stroke-linecap="round"
+              />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <div class="app-body">
+        <aside class="sidebar xp-panel">
+          <div class="sidebar-header xp-group-title">Navegação</div>
+          <nav class="sidebar-nav">
+            <a href="#home" class="nav-item active" data-page="home">Início</a>
+            <a href="#templates" class="nav-item" data-page="templates">Templates</a>
+            <a href="#history" class="nav-item" data-page="history">Histórico</a>
+            <a href="#reports" class="nav-item" data-page="reports">Relatórios</a>
+            <a href="#settings" class="nav-item" data-page="settings">Configurações</a>
+          </nav>
+        </aside>
+
+        <main class="main-content xp-panel-raised">
+          <header class="page-header">
+            <h2 class="page-title" id="pageTitle">Início</h2>
+            <div class="page-actions">
+              <button id="importCypressJsonBtn" class="btn" type="button">Importar JSON</button>
+              <button id="newTestBtn" class="btn primary" type="button">Novo Teste</button>
+            </div>
+          </header>
+
+          <div class="pages-container">
+            <section id="homeView" class="page active">
+              <div class="page-content">
+                <div class="home-stats" id="homeStats" style="display:none">
+                  <div class="stat-card xp-inset">
+                    <div class="stat-value" id="statNew">0</div>
+                    <div class="stat-label">Novos</div>
+                  </div>
+                  <div class="stat-card xp-inset">
+                    <div class="stat-value" id="statPending">0</div>
+                    <div class="stat-label">Em andamento</div>
+                  </div>
+                  <div class="stat-card xp-inset">
+                    <div class="stat-value" id="statCompleted">0</div>
+                    <div class="stat-label">Concluídos</div>
+                  </div>
+                </div>
+                <fieldset class="xp-fieldset">
+                  <legend>Testes recentes</legend>
+                  <div class="home-grid" id="newTiles"></div>
+                  <div id="emptyNewMsg" class="empty-state hidden">
+                    <p>Nenhum teste novo. Clique em <strong>Novo Teste</strong> para começar.</p>
+                  </div>
+                </fieldset>
+              </div>
+            </section>
+
+            <section id="templatesView" class="page hidden">
+              <div class="page-content">
+                <fieldset class="xp-fieldset">
+                  <legend>Templates de cenários</legend>
+                  <p class="muted">Escolha um template para pré-preencher cenários no novo teste.</p>
+                  <div class="templates-toolbar">
+                    <button id="createTemplateBtn" class="btn" type="button">Novo template</button>
+                  </div>
+                  <div class="templates-grid" id="templatesGrid"></div>
+                </fieldset>
+              </div>
+            </section>
+
+            <section id="historyView" class="page hidden">
+              <div class="page-content">
+                <fieldset class="xp-fieldset filters-bar">
+                  <legend>Filtros</legend>
+                  <div class="filter-row">
+                    <label>Status <select id="statusFilter" class="filter-select">
+                      <option value="all">Todos</option>
+                      <option value="validated">Validada</option>
+                      <option value="notvalidated">Não validada</option>
+                      <option value="pending">Pendente</option>
+                    </select></label>
+                    <label>Buscar <input type="search" id="textQuery" class="filter-input" placeholder="Título, descrição..." /></label>
+                    <label>De <input type="date" id="dateFrom" class="filter-input" /></label>
+                    <label>Até <input type="date" id="dateTo" class="filter-input" /></label>
+                  </div>
+                </fieldset>
+                <fieldset class="xp-fieldset">
+                  <legend>Histórico <span id="resultsCount" class="results-count muted"></span></legend>
+                  <section id="list" class="list"></section>
+                  <div class="pager" id="pager">
+                    <button class="btn small" id="prevPage" type="button">Anterior</button>
+                    <span id="pageInfo" class="page-info muted"></span>
+                    <button class="btn small" id="nextPage" type="button">Próxima</button>
+                  </div>
+                </fieldset>
+              </div>
+            </section>
+
+            <section id="reportsView" class="page hidden">
+              <div class="page-content">
+                <fieldset class="xp-fieldset report-controls">
+                  <legend>Relatório de período</legend>
+                  <div class="filter-row">
+                    <label>De <input type="date" id="reportDateFrom" class="filter-input" /></label>
+                    <label>Até <input type="date" id="reportDateTo" class="filter-input" /></label>
+                    <label>Agrupamento <select id="reportGrouping" class="filter-select">
+                      <option value="daily">Diário</option>
+                      <option value="weekly">Semanal</option>
+                      <option value="monthly">Mensal</option>
+                    </select></label>
+                  </div>
+                  <div class="report-actions">
+                    <button id="generatePeriodReportBtn" class="btn primary" type="button">Gerar relatório</button>
+                    <button id="openPeriodReportHtmlBtn" class="btn" type="button">Abrir HTML</button>
+                  </div>
+                  <div class="report-summary">
+                    <div class="stat-card xp-inset">
+                      <div class="stat-value" id="periodReportTotalActivities">0</div>
+                      <div class="stat-label">Atividades no período</div>
+                    </div>
+                    <div class="stat-card xp-inset">
+                      <div class="stat-value" id="periodReportTotalHours">0h</div>
+                      <div class="stat-label">Horas registradas</div>
+                    </div>
+                  </div>
+                  <div id="reportRepeatsRow" class="report-repeats-row hidden">
+                    <p id="reportRepeatsSummary" class="muted"></p>
+                    <button type="button" id="openReportRepeatsDetailBtn" class="btn small">Ver repetidas</button>
+                  </div>
+                  <pre id="periodReportMarkdownPreview" class="report-preview xp-inset">Selecione um período e clique em Gerar relatório.</pre>
+                </fieldset>
+              </div>
+            </section>
+
+            <section id="settingsView" class="page hidden">
+              <div class="page-content">
+                <fieldset class="xp-fieldset">
+                  <legend>Aparência</legend>
+                  <p class="muted">Tema visual da interface.</p>
+                  <div class="theme-options" role="radiogroup" aria-label="Tema">
+                    <label class="theme-option">
+                      <input type="radio" name="appTheme" value="dark" />
+                      <span class="theme-swatch theme-swatch-dark" aria-hidden="true"></span>
+                      <span class="theme-option-label">Escuro</span>
+                    </label>
+                    <label class="theme-option">
+                      <input type="radio" name="appTheme" value="light" />
+                      <span class="theme-swatch theme-swatch-light" aria-hidden="true"></span>
+                      <span class="theme-option-label">Claro</span>
+                    </label>
+                  </div>
+                </fieldset>
+
+                <fieldset class="xp-fieldset">
+                  <legend>Sistemas (sugestões)</legend>
+                  <p class="muted">Lista usada no campo Sistema ao criar testes (uma por linha).</p>
+                  <textarea id="systemsListInput" rows="8" class="filter-input" style="width:100%"></textarea>
+                  <div class="row" style="margin-top:10px">
+                    <button id="saveSystemsBtn" class="btn primary" type="button">Salvar lista</button>
+                  </div>
+                </fieldset>
+              </div>
+            </section>
+          </div>
+        </main>
+      </div>
+
+      <footer class="status-bar">
+        <span id="statusBarText">Pronto</span>
+        <span class="status-bar-spacer"></span>
+        <span id="statusBarVersion">EVE v0.1.0</span>
+      </footer>
+    </div>
+
+    <!-- Modal: novo / editar teste -->
+    <div id="modal" class="modal hidden" aria-hidden="true">
+      <div class="modal-window modal-window-test">
+        <div class="xp-titlebar modal-titlebar">
+          <span id="modalTitle">Novo Teste</span>
+          <button id="closeModal" class="xp-wbtn xp-wbtn-close" type="button" aria-label="Fechar">X</button>
+        </div>
+        <div class="modal-body test-form">
+          <input type="hidden" id="editId" />
+          <div class="form-grid">
+            <label class="field field-lg">
+              <span class="field-label">Título</span>
+              <input id="titleInput" type="text" maxlength="160" placeholder="Ex.: Fluxo de login" />
+            </label>
+            <label class="field field-sm">
+              <span class="field-label">Tempo estimado (min)</span>
+              <input id="estimateInput" type="number" min="1" max="999" value="15" />
+            </label>
+            <label class="field field-md">
+              <span class="field-label">Sistema</span>
+              <input id="systemInput" type="text" list="systemsDatalist" placeholder="Ex.: Portal Web" />
+              <datalist id="systemsDatalist"></datalist>
+            </label>
+            <label class="field field-md">
+              <span class="field-label">Link da atividade</span>
+              <input id="linkInput" type="url" placeholder="https://..." />
+            </label>
+            <label class="field field-md">
+              <span class="field-label">Branch Front</span>
+              <input id="branchFrontInput" type="text" placeholder="feature/..." />
+            </label>
+            <label class="field field-md">
+              <span class="field-label">Branch Back</span>
+              <input id="branchBackInput" type="text" placeholder="feature/..." />
+            </label>
+            <label class="field field-full">
+              <span class="field-label">Descrição</span>
+              <textarea id="descInput" rows="5" placeholder="Descreva o que será testado..."></textarea>
+            </label>
+          </div>
+          <div class="row form-actions">
+            <button id="saveTest" class="btn primary" type="button">Salvar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: detalhes -->
+    <div id="detailModal" class="modal hidden" aria-hidden="true">
+      <div class="detail-modal-container modal-window modal-window-wide">
+        <div class="xp-titlebar modal-titlebar">
+          <span id="detailTitle">Detalhes do Teste</span>
+          <button id="closeDetail" class="xp-wbtn xp-wbtn-close" type="button" aria-label="Fechar">X</button>
+        </div>
+        <div class="detail-layout">
+          <nav class="detail-tabs" id="detailTabs">
+            <button class="detail-tab active" data-tab="general" type="button">Geral</button>
+            <button class="detail-tab" data-tab="scenarios" type="button">Cenários</button>
+            <button class="detail-tab" data-tab="errors" type="button">Erros</button>
+            <button class="detail-tab" data-tab="suggestions" type="button">Sugestões</button>
+            <button class="detail-tab" data-tab="observations" type="button">Observações</button>
+            <button class="detail-tab" data-tab="attention" type="button">Atenção</button>
+          </nav>
+          <div class="detail-main">
+            <div class="detail-meta" id="detailMeta"></div>
+            <div class="detail-meta-card xp-inset" id="detailTimerCard">
+              <span>Estimado: <strong id="detailEstimate">0 min</strong></span>
+              <span>Decorrido: <strong id="detailElapsed">0.0 min</strong></span>
+              <div class="progress"><div class="bar" id="detailBar"></div></div>
+            </div>
+            <div class="detail-pages">
+              <div class="detail-page active" id="pageGeneral"></div>
+              <div class="detail-page hidden" id="pageScenarios"></div>
+              <div class="detail-page hidden" id="pageErrors"></div>
+              <div class="detail-page hidden" id="pageSuggestions"></div>
+              <div class="detail-page hidden" id="pageObservations"></div>
+              <div class="detail-page hidden" id="pageAttention"></div>
+            </div>
+          </div>
+        </div>
+        <footer class="detail-footer">
+          <button data-detail-act="start" class="btn small btn-pill" type="button">Iniciar</button>
+          <button data-detail-act="pause" class="btn small btn-pill" type="button">Pausar</button>
+          <button data-detail-act="stop" class="btn small btn-pill" type="button">Concluir</button>
+          <span class="detail-footer-spacer"></span>
+          <button data-detail-act="report" class="btn small btn-pill" type="button">Relatório</button>
+          <button data-detail-act="reportPdf" class="btn small btn-pill" type="button">PDF</button>
+          <button data-detail-act="reportMd" class="btn small btn-pill" type="button">MD</button>
+          <button data-detail-act="reportSimple" class="btn small btn-pill" type="button">Simples</button>
+          <button data-detail-act="reportDocx" class="btn small btn-pill" type="button">DOCX</button>
+          <button data-detail-act="edit" class="btn small btn-pill" type="button">Editar</button>
+          <button data-detail-act="remove" class="btn small btn-pill btn-pill-danger" type="button">Remover</button>
+        </footer>
+      </div>
+    </div>
+
+    <!-- Modal: validação -->
+    <div id="validateModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-window" style="max-width:420px">
+        <div class="xp-titlebar modal-titlebar">
+          <span>Atividade validada?</span>
+          <button id="closeValidate" class="xp-wbtn xp-wbtn-close" type="button">X</button>
+        </div>
+        <div class="modal-body">
+          <p>O teste foi concluído. A atividade foi validada?</p>
+          <div class="row" style="justify-content:flex-end;gap:8px">
+            <button id="btnValidatedYes" class="btn primary" type="button">Sim</button>
+            <button id="btnValidatedNo" class="btn" type="button">Não</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: editar item -->
+    <div id="editItemModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-window" style="max-width:520px">
+        <div class="xp-titlebar modal-titlebar">
+          <span id="editItemTitle">Editar</span>
+          <button id="closeEditItem" class="xp-wbtn xp-wbtn-close" type="button">X</button>
+        </div>
+        <div class="modal-body">
+          <textarea id="editItemInput" class="auto-expand" rows="3"></textarea>
+          <div id="editItemScenarioContainer" class="hidden" style="margin-top:12px">
+            <label>Cenário vinculado (opcional)
+              <select id="editItemScenarioSelect"><option value="">Nenhum</option></select>
+            </label>
+          </div>
+          <div id="editItemOfferCodeContainer" class="hidden" style="margin-top:12px">
+            <label>Código da oferta (opcional)<input id="editItemOfferCodeInput" type="text" /></label>
+          </div>
+          <div id="editItemErrorAttachmentContainer" class="hidden" style="margin-top:12px">
+            <label>Imagem de erro vinculada (opcional)
+              <select id="editItemErrorAttachmentSelect"><option value="">Nenhuma</option></select>
+            </label>
+          </div>
+          <div class="row" style="justify-content:flex-end;margin-top:12px;gap:8px">
+            <button id="btnSaveEditItem" class="btn primary" type="button">Salvar</button>
+            <button id="btnCancelEditItem" class="btn" type="button">Cancelar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: template editor -->
+    <div id="templateEditorModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-window" style="max-width:560px">
+        <div class="xp-titlebar modal-titlebar">
+          <span id="templateEditorTitle">Template</span>
+          <button id="closeTemplateEditor" class="xp-wbtn xp-wbtn-close" type="button">X</button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="templateEditorId" />
+          <label>Nome<input id="templateEditorName" type="text" /></label>
+          <label>Descrição<textarea id="templateEditorDesc" rows="2"></textarea></label>
+          <label>Cenários (um por linha)<textarea id="templateEditorScenarios" rows="8"></textarea></label>
+          <div class="row" style="gap:8px;margin-top:12px">
+            <button id="saveTemplateBtn" class="btn primary" type="button">Salvar</button>
+            <button id="deleteTemplateBtn" class="btn hidden" type="button">Excluir</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal: relatório repetidas -->
+    <div id="reportRepeatsModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-window" style="max-width:640px">
+        <div class="xp-titlebar modal-titlebar">
+          <span>Atividades repetidas</span>
+          <button id="closeReportRepeats" class="xp-wbtn xp-wbtn-close" type="button">X</button>
+        </div>
+        <div class="modal-body">
+          <div id="reportRepeatsList"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Dialog genérico -->
+    <div id="appDialogModal" class="modal hidden" aria-hidden="true">
+      <div class="modal-window" style="max-width:480px">
+        <div class="xp-titlebar modal-titlebar">
+          <span id="appDialogTitle">Aviso</span>
+          <button id="appDialogClose" class="xp-wbtn xp-wbtn-close" type="button">X</button>
+        </div>
+        <div class="modal-body">
+          <p id="appDialogMessage"></p>
+          <div class="row" style="justify-content:flex-end;gap:8px;margin-top:16px">
+            <button id="appDialogExtra" class="btn hidden" type="button">Extra</button>
+            <button id="appDialogCancel" class="btn hidden" type="button">Cancelar</button>
+            <button id="appDialogConfirm" class="btn primary" type="button">OK</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <template id="testItemTpl">
+      <article class="card test-item compact xp-inset">
+        <div class="test-head clickable">
+          <div class="left-info">
+            <h4 class="test-title"></h4>
+            <span class="badge badge-valid hidden">Validada</span>
+            <span class="badge badge-notvalid hidden">Não validada</span>
+            <div class="muted test-sub"></div>
+          </div>
+          <div class="actions test-actions">
+            <button data-act="start" class="btn small btn-pill" type="button">Iniciar</button>
+            <button data-act="pause" class="btn small btn-pill" type="button">Pausar</button>
+            <button data-act="stop" class="btn small btn-pill" type="button">Concluir</button>
+            <button data-act="report" class="btn small btn-pill" type="button">Relatório</button>
+            <button data-act="reportPdf" class="btn small btn-pill" type="button">PDF</button>
+            <button data-act="reportMd" class="btn small btn-pill" type="button">MD</button>
+            <button data-act="reportSimple" class="btn small btn-pill" type="button">Simples</button>
+            <button data-act="reportDocx" class="btn small btn-pill" type="button">DOCX</button>
+            <button data-act="edit" class="btn small btn-pill" type="button">Editar</button>
+            <button data-act="remove" class="btn small btn-pill btn-pill-danger" type="button" title="Remover">Remover</button>
+          </div>
+        </div>
+        <div class="progress"><div class="bar"></div></div>
+      </article>
+    </template>
+
+    <script type="module" src="renderer.js"></script>
+  </body>
+</html>

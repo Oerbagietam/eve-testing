@@ -1,0 +1,73 @@
+{
+  "name": "eve",
+  "version": "0.1.0",
+  "description": "EVE — registro leve de testes manuais com relatórios locais",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "cross-env NODE_ENV=development electron .",
+    "dev": "cross-env NODE_ENV=development electron .",
+    "build": "cross-env NODE_ENV=production electron-builder",
+    "build:win": "cross-env NODE_ENV=production electron-builder --win",
+    "build:mac": "cross-env NODE_ENV=production electron-builder --mac",
+    "build:linux": "cross-env NODE_ENV=production electron-builder --linux",
+    "build:version": "node build-with-version.js",
+    "build:version:win": "node build-with-version.js win",
+    "build:version:mac": "node build-with-version.js mac",
+    "build:version:linux": "node build-with-version.js linux",
+    "generate-icon": "node scripts/generate-icon.js",
+    "seed:fake": "node scripts/seed-fake-test.mjs",
+    "seed:fake:remove": "node scripts/seed-fake-test.mjs --remove"
+  },
+  "author": "Gabriel",
+  "license": "MIT",
+  "dependencies": {
+    "docx": "^9.7.0",
+    "dotenv": "^17.2.3",
+    "sharp": "^0.33.5"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "electron": "^39.0.0",
+    "electron-builder": "^26.7.0",
+    "to-ico": "^1.0.1"
+  },
+  "build": {
+    "appId": "dev.gabriel.eve",
+    "productName": "EVE",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "main.js",
+      "preload.js",
+      "qa-doc-generator.js",
+      "src/**/*",
+      "assets/**/*",
+      "package.json"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": "assets/icon.ico"
+    },
+    "mac": {
+      "target": "dmg",
+      "icon": "assets/icon-1024.png"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "assets/icon.png"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    }
+  }
+}

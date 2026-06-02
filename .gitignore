@@ -1,0 +1,54 @@
+# Dependências
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Builds e distribuições
+dist
+build/
+out/
+*.exe
+*.dmg
+*.AppImage
+*.deb
+*.rpm
+*.snap
+
+# Arquivos de ambiente
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Logs
+logs/
+*.log
+
+# Sistema Operacional
+Thumbs.db
+.DS_Store
+*~
+
+# IDEs
+.vscode/
+.idea/
+*.code-workspace
+
+# Arquivos temporários
+*.tmp
+*.temp
+*.bak
+.cache/
+
+# Electron
+*.asar.unpacked
+app-update.yml
+*.blockmap
+
+# Testes
+coverage/
+.nyc_output/
