@@ -1,12 +1,6 @@
 import {
-  parseCypressImportPayload,
-  mapCypressTestToHubTest,
-  findExistingImportIndex,
-} from './js/services/cypress-import.js';
-import {
   showAppAlert,
   showAppConfirm,
-  showImportDuplicateChoice,
 } from './js/ui/app-dialog.js';
 import { createLazyImageElement } from './js/ui/lazy-image.js';
 import {
@@ -728,10 +722,6 @@ async function flushSave() {
   }
   return result;
 }
-
-$('#importCypressJsonBtn')?.addEventListener('click', () => {
-  importCypressJsonFromFile();
-});
 
 $('#newTestBtn')?.addEventListener('click', () => openModal());
 
@@ -4486,53 +4476,8 @@ async function onValidatedNo() {
   refreshDetailIfOpen(t);
 }
 
-// ====== Importação Cypress JSON ======
-async function importCypressJsonFromFile() {
-  let payload;
-  try {
-    const result = await globalThis.api.importCypressJson();
-    if (!result || result.canceled) return;
-    if (!result.ok) {
-      showAppAlert(`Não foi possível abrir o arquivo: ${result.error || 'erro desconhecido'}`);
-      return;
-    }
-    payload = parseCypressImportPayload(result.data);
-  } catch (error) {
-    console.error('Erro ao importar JSON:', error);
-    showAppAlert(`Erro ao importar: ${error.message || error}`);
-    return;
-  }
-
-  let added = 0;
-  let replaced = 0;
-  let skipped = 0;
-
-  for (const cypressTest of payload) {
-    const externalId = String(cypressTest.id || '').trim();
-    const existingIndex = findExistingImportIndex(store.tests, externalId);
-    const mapped = mapCypressTestToHubTest(cypressTest);
-
-    if (existingIndex >= 0) {
-      const choice = await showImportDuplicateChoice(externalId);
-      if (choice === 'ignore') { skipped++; continue; }
-      if (choice === 'replace') {
-        store.tests[existingIndex] = { ...store.tests[existingIndex], ...mapped, id: store.tests[existingIndex].id };
-        replaced++;
-        continue;
-      }
-    }
-    store.tests.unshift(mapped);
-    added++;
-  }
-
-  await flushSave();
-  renderList();
-  renderNewTiles();
-  showAppAlert(`Importação concluída.\nNovos: ${added}\nSubstituídos: ${replaced}\nIgnorados: ${skipped}`);
-}
-
 function loadSystemsList() {
-  const list = store.settings?.systemsList || ['Web App', 'API', 'Mobile', 'Cypress E2E'];
+  const list = store.settings?.systemsList || ['Web App', 'API', 'Mobile'];
   const ta = $('#systemsListInput');
   if (ta) ta.value = list.join('\n');
   const dl = $('#systemsDatalist');

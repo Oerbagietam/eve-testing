@@ -83,19 +83,3 @@ export function showAppConfirm(
     showCancel: true,
   });
 }
-
-export function showImportDuplicateChoice(externalId) {
-  return openAppDialog({
-    title: "Teste duplicado",
-    message: `Já existe um teste para a atividade ${externalId || "(sem ID)"}.\n\nO que deseja fazer?`,
-    cancelText: "Ignorar",
-    extraText: "Criar um Novo",
-    confirmText: "Substituir",
-    showCancel: true,
-    showExtra: true,
-  }).then((choice) => {
-    if (choice === "confirm") return "replace";
-    if (choice === "extra") return "create";
-    return "ignore";
-  });
-}

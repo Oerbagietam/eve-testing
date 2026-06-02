@@ -4,7 +4,6 @@ contextBridge.exposeInMainWorld("api", {
   getStore: () => ipcRenderer.invoke("store:get"),
   setStore: (store) => ipcRenderer.invoke("store:set", store),
   openImages: () => ipcRenderer.invoke("dialog:openImages"),
-  importCypressJson: () => ipcRenderer.invoke("import:pickCypressJson"),
   getClipboardImage: () => ipcRenderer.invoke("clipboard:getImage"),
   exportReport: (test) => ipcRenderer.invoke("report:export", test),
   exportReportPdf: (test) => ipcRenderer.invoke("report:exportPdf", test),

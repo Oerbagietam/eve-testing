@@ -40,7 +40,6 @@ Os dados ficam em `%APPDATA%/eve/eve/` (Windows) ou equivalente no sistema:
 - Templates de cenários (padrão + customizados)
 - Histórico com filtros e paginação
 - Relatório de período (diário / semanal / mensal)
-- Importação de JSON do Cypress
 - Exportação HTML, PDF, Markdown e DOCX
 
 ## Tema
