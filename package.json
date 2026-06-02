@@ -15,7 +15,6 @@
     "build:version:win": "node build-with-version.js win",
     "build:version:mac": "node build-with-version.js mac",
     "build:version:linux": "node build-with-version.js linux",
-    "generate-icon": "node scripts/generate-icon.js",
     "seed:fake": "node scripts/seed-fake-test.mjs",
     "seed:fake:remove": "node scripts/seed-fake-test.mjs --remove"
   },
@@ -29,8 +28,7 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "electron": "^39.0.0",
-    "electron-builder": "^26.7.0",
-    "to-ico": "^1.0.1"
+    "electron-builder": "^26.7.0"
   },
   "build": {
     "appId": "dev.gabriel.eve",
