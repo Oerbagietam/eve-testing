@@ -28,11 +28,13 @@
   "devDependencies": {
     "cross-env": "^7.0.3",
     "electron": "^39.0.0",
-    "electron-builder": "^26.7.0"
+    "electron-builder": "^26.7.0",
+    "rcedit": "^5.0.2"
   },
   "build": {
     "appId": "dev.gabriel.eve",
     "productName": "EVE",
+    "icon": "assets/icon.ico",
     "directories": {
       "output": "dist"
     },
@@ -40,6 +42,7 @@
       "main.js",
       "preload.js",
       "qa-doc-generator.js",
+      "main/**/*",
       "src/**/*",
       "assets/**/*",
       "package.json"
@@ -53,8 +56,10 @@
           ]
         }
       ],
-      "icon": "assets/icon.ico"
+      "icon": "assets/icon.ico",
+      "signAndEditExecutable": false
     },
+    "afterPack": "scripts/after-pack.cjs",
     "mac": {
       "target": "dmg",
       "icon": "assets/icon-1024.png"

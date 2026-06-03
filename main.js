@@ -67,6 +67,7 @@ function createWindow() {
   const appPath = getAppPath();
   const preloadPath = path.join(appPath, "preload.js");
   const htmlPath = path.join(appPath, "src", "index.html");
+  const iconPath = path.join(appPath, "assets", "icon.ico");
 
   mainWindow = new BrowserWindow({
     width: 1180,
@@ -74,6 +75,7 @@ function createWindow() {
     minWidth: 980,
     minHeight: 640,
     show: false,
+    icon: iconPath,
     backgroundColor: "#d8c3ff",
     autoHideMenuBar: true,
     frame: false,
